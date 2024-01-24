@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 
 import pandas as pd
 
@@ -6,17 +7,17 @@ from ..tools import get_repository, print_progress, consume_commit, get_reposito
 from ..data import RepositoryInfo
 
 
-def run_extractor(repositories_filepath: Path, commits_filepath: Path, output_dir: Path, clone_dir: Path):
-    if not Path(repositories_filepath).is_file():
+def run_extractor(repositories_filepath: Path, commits_filepath: Path, output_dir: Path, clone_dir: Optional[Path] = None):
+    if not repositories_filepath.is_file():
         raise FileNotFoundError(f"Repositories file {repositories_filepath.absolute()} doesn't exist.")
 
-    if not Path(commits_filepath).is_file():
+    if not commits_filepath.is_file():
         raise FileNotFoundError(f"Commits file {commits_filepath.absolute()} doesn't exist.")
 
-    if not Path(output_dir).is_dir():
+    if not output_dir.is_dir():
         raise FileNotFoundError(f"Output directory {output_dir.absolute()} doesn't exist.")
 
-    if not Path(clone_dir).is_dir():
+    if (clone_dir is not None) and (not clone_dir.is_dir()):
         raise FileNotFoundError(f"Clone directory {clone_dir.absolute()} doesn't exist.")
 
     commit_messages = pd.read_csv(
@@ -69,7 +70,7 @@ def run_extractor(repositories_filepath: Path, commits_filepath: Path, output_di
 
             commit_hashes = set(commit_messages[commit_messages.project == repo.name].sha.to_list())
             number_of_commits = len(commit_hashes)
-            repository = get_repository(clone_dir, commit_hashes, repo)
+            repository = get_repository(commit_hashes, repo, clone_dir)
 
             print(f"Extracting repository [{repos_left}] ({repo.name}) with [{number_of_commits}] commits")
 
