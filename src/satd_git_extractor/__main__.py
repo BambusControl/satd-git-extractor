@@ -88,7 +88,8 @@ def _add_extractor_args(subparsers):
 
     extract_parser.add_argument(
         "--commits",
-        type=str, required=True,
+        type=str,
+        required=True,
         metavar="./commits.csv",
         help="Path to the SATD CSV file with commit messages."
     )
@@ -103,7 +104,8 @@ def _add_extractor_args(subparsers):
 
     extract_parser.add_argument(
         "--clone-dir",
-        type=str, required=False,
+        type=str,
+        required=False,
         metavar="./cloned",
         help="Directory path for the cloned repositories a temporary directory is used otherwise."
     )
