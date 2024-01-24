@@ -55,6 +55,7 @@ def run_extractor(repositories_filepath: Path, commits_filepath: Path, output_di
         if name in repo_names
     ]
     repos_left = len(repo_infos)
+    failed_repositories = set()
 
     for repo in repo_infos:
         # Yes this is terrible (I wanted to quickly see the progress because it takes a few hours to complete)
@@ -74,8 +75,12 @@ def run_extractor(repositories_filepath: Path, commits_filepath: Path, output_di
 
         except Exception as e:
             # Fail fast, but we want to continue with the other repositories
+            failed_repositories.add(repo.name)
             print(f"Failed to extract repository [{repos_left}] ({repo.name}): {repo.url}")
             print(e)
+
+    if len(failed_repositories) > 0:
+        print(f"Failed to extract {len(failed_repositories)} repositories: {failed_repositories}")
 
 
 def _get_repositories_to_extract(commit_messages, repositories):

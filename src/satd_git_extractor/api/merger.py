@@ -12,8 +12,6 @@ def run_merger(project_export_dirpath: Path, commits_filepath: Path, merged_file
     if not commits_filepath.is_file():
         raise FileNotFoundError(f"Commits file {commits_filepath.absolute()} doesn't exist.")
 
-    # print([f.stem for f in project_export_dirpath.iterdir() if f.is_file() and f.suffix == ".csv"])
-
     dataframes = (
         pd.read_csv(
             str(filepath.absolute()),
@@ -24,7 +22,6 @@ def run_merger(project_export_dirpath: Path, commits_filepath: Path, merged_file
     )
 
     extension_dataset = pd.concat(dataframes, copy=False)
-    extension_dataset.drop(columns="project", inplace=True)
 
     base_dataset = pd.read_csv(
         commits_filepath,

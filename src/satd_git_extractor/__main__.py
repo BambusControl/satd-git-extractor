@@ -4,7 +4,7 @@ from pathlib import Path
 from .api import run_extractor, run_merger
 
 
-def main():
+def main() -> None:
     args = _create_parser().parse_args()
 
     if args.mode == "extract":
@@ -12,16 +12,19 @@ def main():
             Path(args.repositories),
             Path(args.commits),
             Path(args.exports_dir),
-            Path(args.clone_dir),
+            None if args.clone_dir is None else Path(args.clone_dir),
         )
+
     elif args.mode == "merge":
         run_merger(
             Path(args.exports_dir),
             Path(args.commits),
             Path(args.output),
         )
+
     else:
-        print(f"Unknown mode: {args.mode}")
+        # Should never happen
+        raise ValueError(f"Invalid mode: {args.mode}")
 
 
 def _create_parser():
@@ -68,7 +71,7 @@ def _add_merger_args(subparsers):
         type=str,
         required=True,
         metavar="./merged.csv",
-        help="Path to the merged output CSV file."
+        help="Path to the merged output CSV file. If the file exists, a number will be appended to the filename."
     )
 
 
