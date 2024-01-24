@@ -61,7 +61,7 @@ def run_extractor(repositories_filepath: Path, commits_filepath: Path, output_di
 
         try:
             repos_left = repos_left - 1
-            print(f"[{repos_left}] repositories left")
+            print(f"[{repos_left}] ", end="", flush=True)
 
             output_filepath = output_dir / f"{repo.name}.csv"
 
