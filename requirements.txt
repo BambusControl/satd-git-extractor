@@ -1,0 +1,4 @@
+bandit
+pydriller
+pandas
+comment-parser==1.2.4
