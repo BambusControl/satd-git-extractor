@@ -1,4 +1,4 @@
-bandit
-pydriller
-pandas
+bandit==1.7.7
+PyDriller==2.6
+pandas==2.2.0
 comment-parser==1.2.4
